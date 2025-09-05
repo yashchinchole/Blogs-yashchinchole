@@ -503,6 +503,10 @@ function escapeHtml(text) {
   });
 }
 
-window.openBlogModal = openBlogModal;
-window.handleUpvote = handleUpvote;
 window.showAdminModal = showAdminModal;
+window.handleUpvote = handleUpvote;
+window.handleModalUpvote = handleModalUpvote;
+window.authenticateAdmin = authenticateAdmin;
+window.showManualBlogForm = showManualBlogForm;
+window.resetAdminModal = resetAdminModal;
+window.openBlogModal = openBlogModal;
