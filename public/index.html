@@ -106,7 +106,7 @@
                         </p>
                         <div class="d-grid gap-2">
                             <button class="btn btn-outline-primary" onclick="showManualBlogForm()">
-                                <i class="fas fa-edit me-2"></i>Add Text Blog
+                                <i class="fas fa-edit me-2"></i>Add Blog
                             </button>
                         </div>
                     </div>
@@ -127,6 +127,13 @@
                                 <label for="authorLinkedin" class="form-label">Author LinkedIn (Optional)</label>
                                 <input type="url" class="form-control" id="authorLinkedin"
                                     placeholder="https://linkedin.com/in/username">
+                            </div>
+                            <div class="mb-3">
+                                <label for="blogType" class="form-label">Blog Type</label>
+                                <select id="blogType" class="form-select">
+                                    <option value="text">Text</option>
+                                    <option value="markdown">Markdown</option>
+                                </select>
                             </div>
                             <div class="mb-3">
                                 <label for="blogContent" class="form-label">Content</label>
@@ -153,6 +160,9 @@
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
+
+    <!-- Markdown Parser -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
     <!-- Custom JavaScript -->
     <script src="/env.js"></script>

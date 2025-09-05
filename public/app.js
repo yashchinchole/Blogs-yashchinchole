@@ -123,12 +123,10 @@ async function loadBlogs() {
 // Render blogs in the UI
 function renderBlogs() {
   const allBlogs = Object.values(blogs);
-  // Sort blogs by upvotes in descending order and take top 3
   const sortedByUpvotes = [...allBlogs].sort(
     (a, b) => (b.upvotes || 0) - (a.upvotes || 0)
   );
   const topThree = sortedByUpvotes.slice(0, 2);
-  // Filter out top three blogs from all blogs and sort the remaining by date descending
   const remainingBlogs = allBlogs
     .filter((blog) => !topThree.includes(blog))
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
@@ -157,11 +155,14 @@ function createBlogCard(blog) {
   const formattedDate = formatDate(blog.createdAt);
   const preview = blog.preview || blog.content.substring(0, 300) + "...";
 
+  let previewHtml =
+    blog.type === "markdown" ? marked.parse(preview) : escapeHtml(preview);
+
   return `
         <div class="col-12">
             <div class="blog-card fade-in" data-blog-id="${blog.id}">
                 <h3 class="blog-card-title">${escapeHtml(blog.title)}</h3>
-                <p class="blog-card-preview">${escapeHtml(preview)}</p>
+                <p class="blog-card-preview">${previewHtml}</p>
                 <div class="blog-card-meta">
                     <div class="author-info">
                         <span class="author-name">${escapeHtml(
@@ -238,12 +239,17 @@ function openBlogModal(blogId, event) {
             : ""
         }
     `;
-  document.getElementById("blogModalContent").textContent = blog.content;
+
+  const modalContent = document.getElementById("blogModalContent");
+  if (blog.type === "markdown") {
+    modalContent.innerHTML = marked.parse(blog.content);
+  } else {
+    modalContent.textContent = blog.content;
+  }
 
   const modalUpvoteBtn = document.getElementById("modalUpvoteBtn");
   modalUpvoteBtn.className = `btn btn-outline-primary btn-sm upvote-btn ${upvoteClass}`;
   modalUpvoteBtn.onclick = () => handleUpvote(blogId);
-  document.getElementById("modalUpvoteCount").textContent = blog.upvotes || 0;
   document.getElementById("modalUpvoteCount").textContent =
     (blog.upvotes || 0) + " Upvotes";
 
@@ -339,13 +345,20 @@ async function handleManualBlogSubmit(e) {
   const authorName = document.getElementById("authorName").value.trim();
   const authorLinkedin = document.getElementById("authorLinkedin").value.trim();
   const content = document.getElementById("blogContent").value.trim();
+  const blogType = document.getElementById("blogType").value; // 👈 New dropdown
 
   if (!title || !authorName || !content) {
     showToast("Please fill in all required fields.", "error");
     return;
   }
 
-  const blog = createBlogObject(title, content, authorName, authorLinkedin);
+  const blog = createBlogObject(
+    title,
+    content,
+    authorName,
+    authorLinkedin,
+    blogType
+  );
 
   try {
     await saveBlog(blog);
@@ -360,7 +373,13 @@ async function handleManualBlogSubmit(e) {
 }
 
 // Create blog object
-function createBlogObject(title, content, authorName, authorLinkedin) {
+function createBlogObject(
+  title,
+  content,
+  authorName,
+  authorLinkedin,
+  type = "text"
+) {
   const timestamp = new Date().toISOString();
   const blogId = `blog_${Date.now()}_${Math.random()
     .toString(36)
@@ -370,7 +389,7 @@ function createBlogObject(title, content, authorName, authorLinkedin) {
     id: blogId,
     title: title,
     content: content,
-    preview: content.substring(0, 300) + "...",
+    preview: content.substring(0, 200) + "...",
     author: {
       name: authorName,
       linkedin: authorLinkedin || null,
@@ -379,6 +398,7 @@ function createBlogObject(title, content, authorName, authorLinkedin) {
     upvotes: 0,
     status: "published",
     source: "manual",
+    type: type,
   };
 }
 
@@ -425,9 +445,9 @@ function createSampleBlog() {
     id: "blog_sample_" + Date.now(),
     title: "Welcome to Minimal Blog",
     content:
-      'This is a sample blog post to demonstrate the functionality of our minimal blog application.\n\nFeatures:\n• Clean, responsive design\n• Firebase integration with localStorage fallback\n• Upvote functionality with duplicate prevention\n• Admin panel for adding blogs\n\nFeel free to explore all the features and add your own blog posts using the "Add Blog" button in the navigation bar. The secret code for admin access is "CODE".',
+      'This is a **sample blog post** to demonstrate the functionality of our minimal blog application.\n\nFeatures:\n- Clean, responsive design\n- Firebase integration with localStorage fallback\n- Upvote functionality with duplicate prevention\n- Admin panel for adding blogs\n\nFeel free to explore all the features and add your own blog posts using the "Add Blog" button in the navigation bar. The secret code for admin access is `CODE`.',
     preview:
-      "This is a sample blog post to demonstrate the functionality of our minimal blog application. Features include clean design...",
+      "This is a **sample blog post** to demonstrate the functionality...",
     author: {
       name: "Demo Author",
       linkedin: null,
@@ -436,6 +456,7 @@ function createSampleBlog() {
     upvotes: 5,
     status: "published",
     source: "manual",
+    type: "markdown",
   };
 }
 
