@@ -2,14 +2,15 @@ import express from "express";
 import dotenv from "dotenv";
 
 dotenv.config();
+
 const app = express();
 
-// serve static frontend
+// Serve static files from public
 app.use(express.static("public"));
 
-// expose env.js dynamically
+// Create /env.js route
 app.get("/env.js", (req, res) => {
-  res.type("application/javascript");
+  res.setHeader("Content-Type", "application/javascript");
   res.send(`
     window.env = {
       FIREBASE_API_KEY: "${process.env.FIREBASE_API_KEY}",
