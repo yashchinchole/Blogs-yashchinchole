@@ -244,6 +244,8 @@ function openBlogModal(blogId, event) {
   modalUpvoteBtn.className = `btn btn-outline-primary btn-sm upvote-btn ${upvoteClass}`;
   modalUpvoteBtn.onclick = () => handleUpvote(blogId);
   document.getElementById("modalUpvoteCount").textContent = blog.upvotes || 0;
+  document.getElementById("modalUpvoteCount").textContent =
+    (blog.upvotes || 0) + " Upvotes";
 
   blogModal.show();
 }
