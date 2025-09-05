@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome for icons -->
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-dark" href="#">Blog</a>
+            <button class="btn btn-primary btn-add-blog" onclick="showAdminModal()">
+                <i class="fas fa-plus me-2"></i>Add Blog
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-4">
+        <!-- Loading Spinner -->
+        <div id="loadingSpinner" class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-3 text-muted">Loading blogs...</p>
+        </div>
+
+        <!-- Blog Cards Container -->
+        <div id="blogContainer" class="row g-4" style="display: none;">
+            <!-- Blog cards will be dynamically inserted here -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="text-center py-5" style="display: none;">
+            <i class="fas fa-file-alt fa-4x text-muted mb-3"></i>
+            <h4 class="text-muted">No blogs found</h4>
+            <p class="text-muted">Be the first to add a blog post!</p>
+        </div>
+    </div>
+
+    <!-- Blog Detail Modal -->
+    <div class="modal fade" id="blogModal" tabindex="-1" aria-labelledby="blogModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <div class="w-100">
+                        <h5 class="modal-title fw-bold" id="blogModalTitle"></h5>
+                        <div class="blog-meta mt-2">
+                            <small class="text-muted" id="blogModalMeta"></small>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="blogModalContent" class="blog-content"></div>
+                </div>
+                <div class="modal-footer border-0 justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <button class="btn btn-outline-secondary btn-sm upvote-btn" id="modalUpvoteBtn"
+                            onclick="handleModalUpvote(this)">
+                            ⬆ <span id="modalUpvoteCount">0</span> upvotes
+                        </button>
+                    </div>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Authentication Modal -->
+    <div class="modal fade" id="adminModal" tabindex="-1" aria-labelledby="adminModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="adminModalLabel">Admin Access</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="authStep">
+                        <p class="text-muted">Enter the secret code to add new blogs:</p>
+                        <div class="mb-3">
+                            <input type="password" class="form-control" id="secretCodeInput" placeholder="Enter code">
+                        </div>
+                        <button class="btn btn-primary w-100" onclick="authenticateAdmin()">Authenticate</button>
+                        <div id="authError" class="alert alert-danger mt-3" style="display: none;"></div>
+                    </div>
+
+                    <div id="adminOptionsStep" style="display: none;">
+                        <p class="text-success mb-3"><i class="fas fa-check-circle me-2"></i>Authentication successful!
+                        </p>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-outline-primary" onclick="showManualBlogForm()">
+                                <i class="fas fa-edit me-2"></i>Add Text Blog
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Manual Blog Form -->
+                    <div id="manualBlogForm" style="display: none;">
+                        <h6 class="mb-3">Add New Blog</h6>
+                        <form id="blogForm">
+                            <div class="mb-3">
+                                <label for="blogTitle" class="form-label">Title</label>
+                                <input type="text" class="form-control" id="blogTitle" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="authorName" class="form-label">Author Name</label>
+                                <input type="text" class="form-control" id="authorName" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="authorLinkedin" class="form-label">Author LinkedIn (Optional)</label>
+                                <input type="url" class="form-control" id="authorLinkedin"
+                                    placeholder="https://linkedin.com/in/username">
+                            </div>
+                            <div class="mb-3">
+                                <label for="blogContent" class="form-label">Content</label>
+                                <textarea class="form-control" id="blogContent" rows="8" required></textarea>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save me-2"></i>Save Blog
+                                </button>
+                                <button type="button" class="btn btn-secondary"
+                                    onclick="resetAdminModal()">Back</button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script src="/env.js"></script>
+    <script type="module" src="app.js"></script>
+</body>
+
+</html>
