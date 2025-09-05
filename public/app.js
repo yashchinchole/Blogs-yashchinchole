@@ -260,7 +260,7 @@ function authenticateAdmin() {
     adminModal.hide();
     document.getElementById("secretCodeInput").value = "";
     document.getElementById("authError").style.display = "none";
-
+    
     // Reset and show the blog form modal
     document.getElementById("blogForm").reset();
     blogModal.show();
@@ -378,8 +378,7 @@ You can add new blog posts by clicking the "Add Blog" button and entering the se
     authorLinkedin: "https://linkedin.com/in/example",
     createdAt: new Date().toISOString(),
     upvotes: 5,
-    preview:
-      "This is a sample blog post to demonstrate the functionality of this minimal blog application...",
+    preview: "This is a sample blog post to demonstrate the functionality of this minimal blog application...",
   };
 
   blogsRef.child(sampleBlog.id).set(sampleBlog);
@@ -403,8 +402,7 @@ You can add new blog posts by clicking the "Add Blog" button and entering the se
     authorLinkedin: "https://linkedin.com/in/example",
     createdAt: new Date().toISOString(),
     upvotes: 5,
-    preview:
-      "This is a sample blog post to demonstrate the functionality of this minimal blog application...",
+    preview: "This is a sample blog post to demonstrate the functionality of this minimal blog application...",
   };
 
   blogs[sampleBlog.id] = sampleBlog;
