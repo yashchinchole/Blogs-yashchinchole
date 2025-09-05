@@ -122,9 +122,17 @@ async function loadBlogs() {
 
 // Render blogs in the UI
 function renderBlogs() {
-  const blogArray = Object.values(blogs).sort(
-    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+  const allBlogs = Object.values(blogs);
+  // Sort blogs by upvotes in descending order and take top 3
+  const sortedByUpvotes = [...allBlogs].sort(
+    (a, b) => (b.upvotes || 0) - (a.upvotes || 0)
   );
+  const topThree = sortedByUpvotes.slice(0, 3);
+  // Filter out top three blogs from all blogs and sort the remaining by date descending
+  const remainingBlogs = allBlogs
+    .filter((blog) => !topThree.includes(blog))
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  const blogArray = [...topThree, ...remainingBlogs];
 
   if (blogArray.length === 0) {
     blogContainer.style.display = "none";
