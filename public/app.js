@@ -127,7 +127,7 @@ function renderBlogs() {
   const sortedByUpvotes = [...allBlogs].sort(
     (a, b) => (b.upvotes || 0) - (a.upvotes || 0)
   );
-  const topThree = sortedByUpvotes.slice(0, 3);
+  const topThree = sortedByUpvotes.slice(0, 2);
   // Filter out top three blogs from all blogs and sort the remaining by date descending
   const remainingBlogs = allBlogs
     .filter((blog) => !topThree.includes(blog))
