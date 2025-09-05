@@ -1,24 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minimal Blog</title>
-
+    
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
+    
     <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
-
+    
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
+    
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-
 <body>
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light sticky-top">
@@ -79,8 +77,7 @@
                             </div>
                             <div class="form-group mb-3">
                                 <label for="authorLinkedin" class="form-label">Author LinkedIn (optional)</label>
-                                <input type="url" class="form-control" id="authorLinkedin"
-                                    placeholder="https://linkedin.com/in/username">
+                                <input type="url" class="form-control" id="authorLinkedin" placeholder="https://linkedin.com/in/username">
                             </div>
                             <div class="d-flex gap-2">
                                 <button type="submit" class="btn btn-primary">Publish Blog</button>
@@ -88,7 +85,7 @@
                             </div>
                         </form>
                     </div>
-
+                    
                     <!-- Blog Content Display (for reading blogs) -->
                     <div id="blogContentDisplay">
                         <div id="modalBlogMeta" class="blog-meta mb-3"></div>
@@ -116,8 +113,7 @@
                         Invalid secret code. Please try again.
                     </div>
                     <div class="d-flex gap-2">
-                        <button type="button" class="btn btn-primary"
-                            onclick="authenticateAdmin()">Authenticate</button>
+                        <button type="button" class="btn btn-primary" onclick="authenticateAdmin()">Authenticate</button>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                     </div>
                 </div>
@@ -128,14 +124,14 @@
     <!-- Scripts -->
     <!-- Environment Variables -->
     <script src="/env.js"></script>
-
+    
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
-
+    
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+    
     <!-- Custom Scripts -->
     <script type="module" src="app.js"></script>
 
@@ -163,7 +159,7 @@
 
         // Update the openBlog function to show content
         window.originalOpenBlog = window.openBlog;
-        window.openBlog = function (blogId) {
+        window.openBlog = function(blogId) {
             showBlogContent();
             if (window.originalOpenBlog) {
                 window.originalOpenBlog(blogId);
@@ -172,16 +168,16 @@
 
         // Update admin authentication to show form
         window.originalAuthenticateAdmin = window.authenticateAdmin;
-        window.authenticateAdmin = function () {
+        window.authenticateAdmin = function() {
             const secretCode = document.getElementById("secretCodeInput").value;
             const adminModal = bootstrap.Modal.getInstance(document.getElementById('adminModal'));
             const blogModal = new bootstrap.Modal(document.getElementById('blogModal'));
-
+            
             if (secretCode === window.env?.SECRET_CODE) {
                 adminModal.hide();
                 document.getElementById("secretCodeInput").value = "";
                 document.getElementById("authError").style.display = "none";
-
+                
                 // Reset and show the blog form modal
                 document.getElementById("blogForm").reset();
                 showBlogForm();
@@ -192,5 +188,4 @@
         };
     </script>
 </body>
-
 </html>
