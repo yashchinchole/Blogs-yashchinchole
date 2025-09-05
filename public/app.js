@@ -503,10 +503,10 @@ function escapeHtml(text) {
   });
 }
 
-window.showAdminModal = showAdminModal;
-window.handleUpvote = handleUpvote;
-window.handleModalUpvote = handleModalUpvote;
-window.authenticateAdmin = authenticateAdmin;
-window.showManualBlogForm = showManualBlogForm;
-window.resetAdminModal = resetAdminModal;
-window.openBlogModal = openBlogModal;
+// window.showAdminModal = showAdminModal;
+// window.handleUpvote = handleUpvote;
+// window.handleModalUpvote = handleModalUpvote;
+// window.authenticateAdmin = authenticateAdmin;
+// window.showManualBlogForm = showManualBlogForm;
+// window.resetAdminModal = resetAdminModal;
+// window.openBlogModal = openBlogModal;
