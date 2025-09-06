@@ -187,7 +187,9 @@ function createBlogCard(blog) {
                             <span>${blog.upvotes || 0}</span>
                         </button>
                         <button class="btn btn-outline-primary btn-sm read-more-btn" 
-                                onclick="openBlogModal('${blog.id}', event)">
+                                onclick="window.location.href='blog.html?id=${
+                                  blog.id
+                                }'">
                             Read More
                         </button>
                     </div>
