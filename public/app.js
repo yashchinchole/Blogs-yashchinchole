@@ -516,11 +516,12 @@ function showToast(message, type = "info") {
 }
 
 function formatDate(dateString) {
-  return new Date(dateString).toLocaleDateString("en-US", {
+  return new Intl.DateTimeFormat("en-IN", {
     year: "numeric",
-    month: "short",
+    month: "long",
     day: "numeric",
-  });
+    timeZone: "Asia/Kolkata",
+  }).format(new Date(dateString));
 }
 
 function escapeHtml(text) {
