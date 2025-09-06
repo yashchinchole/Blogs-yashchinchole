@@ -5,7 +5,6 @@ let blogsRef;
 let isFirebaseConnected = false;
 let blogs = {};
 
-// Utility function to escape HTML
 function escapeHtml(text) {
   const map = {
     "&": "&amp;",
@@ -35,6 +34,7 @@ function getBlogIdFromURL() {
 function showError(message) {
   document.getElementById("blogTitle").textContent = "Error";
   document.getElementById("blogMeta").textContent = "";
+  document.getElementById("upvoteCount").textContent = "";
   document.getElementById(
     "blogContent"
   ).innerHTML = `<p class="text-danger">${escapeHtml(message)}</p>`;
@@ -42,9 +42,21 @@ function showError(message) {
 
 function displayBlog(blog) {
   document.getElementById("blogTitle").textContent = blog.title;
-  document.getElementById("blogMeta").textContent = `By ${escapeHtml(
-    blog.author.name
-  )} • ${formatDate(blog.createdAt)}`;
+
+  let authorLink = blog.author.linkedin
+    ? `<a href="${escapeHtml(
+        blog.author.linkedin
+      )}" target="_blank">${escapeHtml(blog.author.name)}</a>`
+    : escapeHtml(blog.author.name);
+
+  document.getElementById(
+    "blogMeta"
+  ).innerHTML = `By ${authorLink} • ${formatDate(blog.createdAt)}`;
+
+  document.getElementById("upvoteCount").textContent = `${
+    blog.upvotes || 0
+  } Upvotes`;
+
   const contentDiv = document.getElementById("blogContent");
   if (blog.type === "markdown") {
     contentDiv.innerHTML = marked.parse(blog.content);

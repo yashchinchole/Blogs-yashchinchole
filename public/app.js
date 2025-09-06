@@ -201,19 +201,19 @@ function createBlogCard(blog) {
 
 // Add event listeners to dynamically created elements
 function addEventListeners() {
-  document.querySelectorAll(".blog-card").forEach((card) => {
-    card.addEventListener("click", function (e) {
-      if (
-        e.target.closest(".upvote-btn") ||
-        e.target.closest(".read-more-btn") ||
-        e.target.closest(".author-linkedin")
-      ) {
-        return;
-      }
-      const blogId = this.dataset.blogId;
-      openBlogModal(blogId);
-    });
-  });
+  // document.querySelectorAll(".blog-card").forEach((card) => {
+  //   card.addEventListener("click", function (e) {
+  //     if (
+  //       e.target.closest(".upvote-btn") ||
+  //       e.target.closest(".read-more-btn") ||
+  //       e.target.closest(".author-linkedin")
+  //     ) {
+  //       return;
+  //     }
+  //     const blogId = this.dataset.blogId;
+  //     openBlogModal(blogId);
+  //   });
+  // });
 }
 
 // Open blog detail modal
