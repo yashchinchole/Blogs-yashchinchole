@@ -8,6 +8,7 @@
   "dependencies": {
     "@vercel/node": "^5.3.21",
     "dotenv": "^16.4.5",
-    "express": "^4.21.2"
+    "express": "^4.21.2",
+    "firebase": "^12.2.1"
   }
 }
