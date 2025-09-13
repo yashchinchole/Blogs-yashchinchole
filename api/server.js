@@ -42,12 +42,19 @@ app.get("/api/blogs", async (req, res) => {
 // ---- API: Get blogs by author ----
 app.get("/api/blogs/author/:name", async (req, res) => {
   try {
-    const snapshot = await database.ref("blogs").once("value");
-    const blogs = snapshot.val() || {};
-    const filtered = Object.values(blogs).filter(
+    const snapshot = await blogsRef.once("value");
+    const data = snapshot.val() || {};
+    const blogs = Object.values(data);
+
+    const authorName = req.params.name.toLowerCase().trim();
+
+    const filtered = blogs.filter(
       (blog) =>
-        blog.author?.name?.toLowerCase() === req.params.name.toLowerCase()
+        blog.author &&
+        blog.author.name &&
+        blog.author.name.toLowerCase().trim() === authorName
     );
+
     res.json(filtered);
   } catch (error) {
     console.error("Error fetching blogs by author:", error);
